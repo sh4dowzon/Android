@@ -36,6 +36,7 @@ public class PokemonSearchAdapter extends ArrayAdapter<String> {
         imagenes = new ArrayList<Bitmap>();
         tipo1 = new ArrayList<String>();
         tipo2 = new ArrayList<String>();
+        
     }
 
     public View getView(int position, View view, ViewGroup parent) {

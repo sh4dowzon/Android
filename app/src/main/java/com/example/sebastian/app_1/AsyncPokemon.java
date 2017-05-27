@@ -10,7 +10,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -46,6 +45,8 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
                 tipo2 = test.getElementsByClass("type-icon").get(1);
             }
 
+
+
             //get pokemon icon
             Document doc2 = Jsoup.connect("http://archives.bulbagarden.net/wiki/File:"+subtest.text()+"MS.png").get();
             test = doc2.getElementsByClass("fullImageLink").first();
@@ -64,24 +65,7 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
             Bitmap imagen = loadFromURL(src);
             adapter.addPokemon(params[0], imagen, stringTipo1,stringTipo2);
 
-            //TEST
 
-            FileOutputStream out = null;
-            try {
-                out = new FileOutputStream(params[0]+".png");
-                imagen.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                // PNG is a lossless format, the compression factor (100) is ignored
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             return imagen;
 
 

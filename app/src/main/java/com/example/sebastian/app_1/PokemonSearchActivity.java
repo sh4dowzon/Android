@@ -73,8 +73,18 @@ public class PokemonSearchActivity extends AppCompatActivity {
                 TextView x = (TextView)view.findViewById(R.id.item);
                 //Toast.makeText(getApplicationContext(),v.getText(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(PokemonSearchActivity.this,MainActivity.class);
-                intent.putExtra("POKEMON_NAME",x.getText().toString());
+                intent.putExtra("POKEMON_NAME",x.getText().toString().substring(0,1).toUpperCase() + x.getText().toString().substring(1));
                 intent.putExtra("TEAM_NAME","Breco's Team");
+                x = (TextView)view.findViewById(R.id.textView1);
+                String[] types = x.getText().toString().split("-");
+                intent.putExtra("TYPE_1",types[0].toLowerCase().trim());
+                if(types.length == 2){
+                    intent.putExtra("TYPE_2",types[1].toLowerCase().trim());
+                }
+                else{
+                    intent.putExtra("TYPE_2","");
+                }
+
 
                 startActivity(intent);
             }

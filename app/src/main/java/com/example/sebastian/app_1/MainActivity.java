@@ -49,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
             // Cuando te devuelves de haber seleccionado un pokemon de la busqueda y lo agregas al team
             String pokemon = extras.getString("POKEMON_NAME");
+            String type1 = extras.getString("TYPE_1");
+            String type2 = extras.getString("TYPE_2");
             if(pokemon != null){
                 Log.d("POKEMON",pokemon);
-                adapter.addPokemonToTeam(pokemon);
+                adapter.addPokemonToTeam(pokemon,type1,type2);
             }
         }
 

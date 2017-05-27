@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static com.example.sebastian.app_1.R.drawable.magnezone;
+
 /**
  * Created by Sebastian on 22-05-2017.
  */
@@ -31,7 +33,7 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
             datos.add(new Pokemon(R.drawable.gliscor,"Gliscor",R.drawable.ground,R.drawable.flying,"Poison Heal"));
             datos.add(new Pokemon(R.drawable.sceptile,"Sceptile",R.drawable.grass,R.drawable.nulo,"Unburden"));
             datos.add(new Pokemon(R.drawable.togekiss,"Togekiss",R.drawable.fairy,R.drawable.flying,"Serene Grace"));
-            datos.add(new Pokemon(R.drawable.magnezone,"Magnezone",R.drawable.electric,R.drawable.steel,"Magnet Pull"));
+            datos.add(new Pokemon(magnezone,"Magnezone",R.drawable.electric,R.drawable.steel,"Magnet Pull"));
             this.notifyDataSetChanged();
         }
     }
@@ -61,9 +63,15 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
         holder.ability.setText(pklista.ability);
         return row;
     }
-    public void addPokemonToTeam(String name){
+    public void addPokemonToTeam(String name, String type1,String type2){
         Log.d("POKEMON",name);
-        datos.add(new Pokemon(R.drawable.magnezone,"Magnezone",R.drawable.electric,R.drawable.steel,"Magnet Pull"));
+        Log.d("TYPE_1",type1);
+        Log.d("TYPE_2",type2);
+        int id_1 = context.getResources().getIdentifier("drawable/"+type1, null, context.getPackageName());
+        int id_2 = context.getResources().getIdentifier("drawable/"+type2, null, context.getPackageName());
+
+        datos.add(new Pokemon(R.drawable.magnezone,name,id_1,id_2,""));
+        this.notifyDataSetChanged();
     }
     static class pklist_holder{
         ImageView icon;
