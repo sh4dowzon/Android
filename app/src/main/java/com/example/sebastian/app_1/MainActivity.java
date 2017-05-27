@@ -1,18 +1,19 @@
 package com.example.sebastian.app_1;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 //lista_de_pokes//
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<pklist>  test = new ArrayList<pklist>();
+        List<Pokemon>  test = new ArrayList<Pokemon>();
         team_name = (TextView) findViewById(R.id.team_name);
         team_icon1 = (ImageView) findViewById(R.id.team_icon1);
         team_icon2 = (ImageView) findViewById(R.id.team_icon2);
@@ -40,18 +41,27 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = intent_in.getExtras();
         if (extras!=null) {
             String dato = extras.getString("TEAM_NAME");
-            pklist_adapter adapter = new pklist_adapter(this,R.layout.poke_list_listview_item_row,test,dato);
+            PokemonListAdapter adapter = new PokemonListAdapter(this,R.layout.poke_list_listview_item_row,test,dato);
             lv = (ListView) findViewById(R.id.lv);
             View header = (View) getLayoutInflater().inflate(R.layout.poke_list_header_row,null);
             lv.addHeaderView(header);
             lv.setAdapter(adapter);
+
+            // Cuando te devuelves de haber seleccionado un pokemon de la busqueda y lo agregas al team
+            String pokemon = extras.getString("POKEMON_NAME");
+            if(pokemon != null){
+                Log.d("POKEMON",pokemon);
+                adapter.addPokemonToTeam(pokemon);
+            }
         }
+
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView x = (TextView)view.findViewById(R.id.elem_tv);
-                //Toast.makeText(getApplicationContext(),v.getText(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this,single_poke_main.class);
+                //Toast.makeText(getApplicationContext(),v.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this,SinglePokemonActivity.class);
                 String v = x.getText().toString();
                 if(v.equals("Gengar")){
                     intent.putExtra("NAME","Gengar");
@@ -72,6 +82,16 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("NAME","Froslass");
                 }
                 startActivity(intent);
+            }
+        });
+        Button pokemon = (Button) findViewById(R.id.button2);
+        pokemon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,PokemonSearchActivity.class);
+                intent.putExtra("TEAM_NAME","Breco's Team");
+                startActivity(intent);
+
             }
         });
     }

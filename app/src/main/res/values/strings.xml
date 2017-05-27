@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">APP_1</string>
+    <string name="title_activity_pokemon_search">PokemonSearchActivity</string>
 </resources>

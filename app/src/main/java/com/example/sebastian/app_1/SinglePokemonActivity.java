@@ -3,17 +3,14 @@ package com.example.sebastian.app_1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
  * Created by Sebastian on 25-05-2017.
  */
 
-public class single_poke_main extends AppCompatActivity{
+public class SinglePokemonActivity extends AppCompatActivity{
     ImageView icon;
     TextView name;
     ImageView type1;

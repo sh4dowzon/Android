@@ -9,17 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
-
 /**
  * Created by Sebastian on 22-05-2017.
  */
 
-public class team_list_adapter extends ArrayAdapter<team_list> {
+public class TeamListAdapter extends ArrayAdapter<TeamList> {
     Context context;
     int layoutresourceid;
-    team_list data[] = null;
-    public team_list_adapter(Context context, int layoutresourceid, team_list[] data){
+    TeamList data[] = null;
+    public TeamListAdapter(Context context, int layoutresourceid, TeamList[] data){
         super(context, layoutresourceid,data);
         this.context = context;
         this.layoutresourceid = layoutresourceid;
@@ -44,7 +42,7 @@ public class team_list_adapter extends ArrayAdapter<team_list> {
         else{
             holder = (team_list_holder)row.getTag();
         }
-        team_list list = data[position];
+        TeamList list = data[position];
         holder.team_name.setText(list.team_name);
         holder.team_icon1.setImageResource(list.team_icon1);
         holder.team_icon2.setImageResource(list.team_icon2);
