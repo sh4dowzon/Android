@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonSearchActivity extends AppCompatActivity {
-
+    public ImageView list_type1;
+    public ImageView list_type2;
     public String teamName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,20 +71,16 @@ public class PokemonSearchActivity extends AppCompatActivity {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView x = (TextView)view.findViewById(R.id.item);
+                TextView x = (TextView)view.findViewById(R.id.search_poke_name);
                 //Toast.makeText(getApplicationContext(),v.getText(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(PokemonSearchActivity.this,MainActivity.class);
                 intent.putExtra("POKEMON_NAME",x.getText().toString().substring(0,1).toUpperCase() + x.getText().toString().substring(1));
-                intent.putExtra("TEAM_NAME","Breco's Team");
-                x = (TextView)view.findViewById(R.id.textView1);
-                String[] types = x.getText().toString().split("-");
-                intent.putExtra("TYPE_1",types[0].toLowerCase().trim());
-                if(types.length == 2){
-                    intent.putExtra("TYPE_2",types[1].toLowerCase().trim());
-                }
-                else{
-                    intent.putExtra("TYPE_2","");
-                }
+                intent.putExtra("TEAM_NAME","Team Kawaii");
+                list_type1 = (ImageView)view.findViewById(R.id.search_poke_type1);
+                list_type2 = (ImageView)view.findViewById(R.id.search_poke_type2);
+                //x = (TextView)view.findViewById(R.id.textView1);
+                //String[] types = x.getText().toString().split("-");
+                //placeholders de tipo//
 
 
                 startActivity(intent);

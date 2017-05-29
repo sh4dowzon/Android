@@ -67,10 +67,11 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
         Log.d("POKEMON",name);
         Log.d("TYPE_1",type1);
         Log.d("TYPE_2",type2);
+        type1 = type1.toLowerCase().trim();
+        type2 = type2.toLowerCase().trim();
         int id_1 = context.getResources().getIdentifier("drawable/"+type1, null, context.getPackageName());
         int id_2 = context.getResources().getIdentifier("drawable/"+type2, null, context.getPackageName());
-
-        datos.add(new Pokemon(R.drawable.magnezone,name,id_1,id_2,""));
+        datos.add(new Pokemon(R.drawable.ditto,name,id_1,id_2,""));
         this.notifyDataSetChanged();
     }
     static class pklist_holder{

@@ -10,7 +10,8 @@
     android:paddingTop="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".PokemonSearchActivity"
-    tools:showIn="@layout/activity_pokemon_search">
+    tools:showIn="@layout/activity_pokemon_search"
+    android:background="#000000">
 
     <Button
         android:layout_width="wrap_content"
@@ -35,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
+        android:textColor="#FFFFFF"
         android:layout_alignBottom="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

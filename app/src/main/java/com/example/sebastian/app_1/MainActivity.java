@@ -53,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
             String type2 = extras.getString("TYPE_2");
             if(pokemon != null){
                 Log.d("POKEMON",pokemon);
-                adapter.addPokemonToTeam(pokemon,type1,type2);
+                //adapter.addPokemonToTeam(pokemon,"Normal","Dragon");
+                //
+                //
+                adapter.addPokemonToTeam(pokemon,AsyncPokemon.type1,AsyncPokemon.type2);
+                //
+                //
             }
         }
 
@@ -86,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button pokemon = (Button) findViewById(R.id.button2);
+        Button pokemon = (Button) findViewById(R.id.button_add_poke);
         pokemon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,PokemonSearchActivity.class);
-                intent.putExtra("TEAM_NAME","Breco's Team");
+                intent.putExtra("TEAM_NAME","Team Kawaii");
                 startActivity(intent);
 
             }

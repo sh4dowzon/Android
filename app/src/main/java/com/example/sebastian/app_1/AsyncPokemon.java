@@ -22,6 +22,7 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
 
     ImageView bmImage;
     PokemonSearchAdapter adapter;
+    public static String type1 = "", type2 = "";
     public AsyncPokemon(ImageView image, PokemonSearchAdapter adapter){
         bmImage = image;
         this.adapter = adapter;
@@ -58,12 +59,14 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
             String src = subtest.absUrl("href");
             URL url = new URL(src);
             String stringTipo1 = tipo1.text();
-            String stringTipo2 = "";
+            type1 = tipo1.text();
+            String stringTipo2 = "nulo";
             if(tipo2 != null){
                 stringTipo2 = tipo2.text();
+                type2 = tipo2.text();
             }
             Bitmap imagen = loadFromURL(src);
-            adapter.addPokemon(params[0], imagen, stringTipo1,stringTipo2);
+            adapter.addPokemon(params[0].substring(0,1).toUpperCase()+params[0].substring(1), imagen, stringTipo1,stringTipo2);
 
 
             return imagen;
