@@ -63,7 +63,6 @@ public class PokemonSearchActivity extends AppCompatActivity {
                 text.setText("");
 
 
-
             }
         });
 
