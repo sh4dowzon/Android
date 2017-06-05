@@ -20,7 +20,11 @@ import java.util.List;
 public class PokemonSearchActivity extends AppCompatActivity {
     public ImageView list_type1;
     public ImageView list_type2;
-    public String teamName = "";
+
+    //TEST
+
+    private int team_id;
+    public Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //INIT
@@ -29,12 +33,17 @@ public class PokemonSearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //TEST
+        this.context = this;
+        //
+
         //INTENT
 
         Intent intent = getIntent();
         Bundle datos = intent.getExtras();
         if(datos != null){
-            teamName = datos.getString("TEAM_NAME");
+
+            team_id = datos.getInt("TEAM_ID");
         }
 
         //ADAPTER PARA LISTAS
@@ -71,10 +80,20 @@ public class PokemonSearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView x = (TextView)view.findViewById(R.id.search_poke_name);
-                //Toast.makeText(getApplicationContext(),v.getText(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(PokemonSearchActivity.this,MainActivity.class);
-                intent.putExtra("POKEMON_NAME",x.getText().toString().substring(0,1).toUpperCase() + x.getText().toString().substring(1));
-                intent.putExtra("TEAM_NAME","Team Kawaii");
+
+
+                //ADD pokemon to DB
+
+                DBHelper db = new DBHelper(context);
+
+                int type1 = context.getResources().getIdentifier("drawable/"+AsyncPokemon.type1, null, context.getPackageName());
+                int type2 = context.getResources().getIdentifier("drawable/"+AsyncPokemon.type2, null, context.getPackageName());
+
+                db.addPokemon(x.getText().toString(),type1,type2,"levitate",team_id);
+
+                //intent
+                Intent intent = new Intent(PokemonSearchActivity.this,TeamActivity.class);
+                intent.putExtra("TEAM_ID",team_id);
                 list_type1 = (ImageView)view.findViewById(R.id.search_poke_type1);
                 list_type2 = (ImageView)view.findViewById(R.id.search_poke_type2);
                 //x = (TextView)view.findViewById(R.id.textView1);

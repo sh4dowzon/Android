@@ -2,7 +2,6 @@ package com.example.sebastian.app_1;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.sebastian.app_1.R.drawable.magnezone;
-
 /**
  * Created by Sebastian on 22-05-2017.
  */
@@ -22,12 +19,16 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
     Context context;
     int layoutresourceid;
     List<Pokemon> datos;
-    public PokemonListAdapter(Context context, int layoutresourceid, List<Pokemon> data, String team){
+    public PokemonListAdapter(Context context, int layoutresourceid, List<Pokemon> data){
         super(context, layoutresourceid,data);
         this.context = context;
         this.layoutresourceid = layoutresourceid;
         this.datos = data;
-        if(team.equals("Team Kawaii")){
+
+
+
+
+        /*if(team.equals("Team Kawaii")){
             datos.add(new Pokemon(R.drawable.gengar,"Gengar",R.drawable.ghost,R.drawable.poison,"Cursed Body"));
             datos.add(new Pokemon(R.drawable.froslass,"Froslass",R.drawable.ice,R.drawable.ghost,"Snow Cloak"));
             datos.add(new Pokemon(R.drawable.gliscor,"Gliscor",R.drawable.ground,R.drawable.flying,"Poison Heal"));
@@ -35,7 +36,8 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
             datos.add(new Pokemon(R.drawable.togekiss,"Togekiss",R.drawable.fairy,R.drawable.flying,"Serene Grace"));
             datos.add(new Pokemon(magnezone,"Magnezone",R.drawable.electric,R.drawable.steel,"Magnet Pull"));
             this.notifyDataSetChanged();
-        }
+        }*/
+
     }
     public View getView(int position, View convertview, ViewGroup parent){
         View row = convertview;
@@ -54,26 +56,16 @@ public class PokemonListAdapter extends ArrayAdapter<Pokemon> {
         else{
             holder = (pklist_holder)row.getTag();
         }
-        //Pokemon pklista = data[position];
-        Pokemon pklista = datos.get(position);
-        holder.icon.setImageResource(pklista.icon);
-        holder.name.setText(pklista.name);
-        holder.type1.setImageResource(pklista.type1);
-        holder.type2.setImageResource(pklista.type2);
-        holder.ability.setText(pklista.ability);
+
+        Pokemon pokemon = datos.get(position);
+        holder.icon.setImageResource(pokemon.icon);
+        holder.name.setText(pokemon.name);
+        holder.type1.setImageResource(pokemon.type1);
+        holder.type2.setImageResource(pokemon.type2);
+        holder.ability.setText(pokemon.ability);
         return row;
     }
-    public void addPokemonToTeam(String name, String type1,String type2){
-        Log.d("POKEMON",name);
-        Log.d("TYPE_1",type1);
-        Log.d("TYPE_2",type2);
-        type1 = type1.toLowerCase().trim();
-        type2 = type2.toLowerCase().trim();
-        int id_1 = context.getResources().getIdentifier("drawable/"+type1, null, context.getPackageName());
-        int id_2 = context.getResources().getIdentifier("drawable/"+type2, null, context.getPackageName());
-        datos.add(new Pokemon(R.drawable.ditto,name,id_1,id_2,""));
-        this.notifyDataSetChanged();
-    }
+
     static class pklist_holder{
         ImageView icon;
         TextView name;

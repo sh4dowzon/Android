@@ -5,105 +5,118 @@ package com.example.sebastian.app_1;
  */
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 
-public class DBHelper {
-    Context context;
+public class DBHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "pokemon.db";
+    private static final int DATABASE_VERSION = 1;
 
-    public void init(Context context){
-        this.context = context;
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("team", 0);
-        pref = context.getApplicationContext().getSharedPreferences("ability", 0);
-        pref = context.getApplicationContext().getSharedPreferences("move", 0);
-        pref = context.getApplicationContext().getSharedPreferences("pokemon", 0);
+    private static final String CREATE_TABLE_TEAM = "create table if not exists team"
+            + "("
+            + "_id" + " integer primary key autoincrement,"
+            + "name" + " text not null " + ")";
+
+    private static final String CREATE_TABLE_POKEMON = "create table if not exists pokemon"
+            + "("
+            + "_id" + " integer primary key autoincrement, "
+            + "name" + " text not null, "
+            + "type1" + " int not null, "
+            + "type2" + " int not null, "
+            + "ability" + " text not null, "
+            + "team_id" + " integer,"
+            + "FOREIGN KEY(team_id) REFERENCES team(_id)" + ")";
+
+
+
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
-    public void getTeams(){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("team", 0);
-        Map<String, ?> allEntries = pref.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+    @Override
+    public void onCreate(SQLiteDatabase db2) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(CREATE_TABLE_TEAM);
+        db.execSQL(CREATE_TABLE_POKEMON);
+
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("some sql statement to do something");
+    }
+    public void createTables(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(CREATE_TABLE_TEAM);
+        db.execSQL(CREATE_TABLE_POKEMON);
+    }
+
+        public void dropTables(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("DROP TABLE IF EXISTS pokemon");
+            db.execSQL("DROP TABLE IF EXISTS team");
         }
-    }
 
+
+    public void addPokemon(String name, int type1,int type2, String ability,int team_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO pokemon (name,type1,type2,ability,team_id) VALUES " +
+                "(" +
+                "'"+name + "',"+
+                type1 + ","+
+                type2 + ","+
+                "'"+ability + "',"+
+                team_id +
+                ")");
+    }
     public void addTeam(String name){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("team", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(name,"");
-        editor.commit();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(
+                "INSERT INTO team (name) VALUES "
+                        + "('"
+                        + name
+                        + "')"
+        );
     }
-    //POKEMON
-    public void addPokemon(String team, String pokemon, String pokedata){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("pokemon", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(team + pokemon, pokedata);
-        editor.commit();
-
-        pref = context.getApplicationContext().getSharedPreferences("", 0);
-
+    public void getTeams(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM team",null);
     }
-    public void addPokemon(String team, Pokemon pokemon){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("pokemon", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(team+pokemon.name,pokemon.type1+"-"+pokemon.type2+"|"+pokemon.ability+"|"+pokemon.mov1+"|"+pokemon.mov2+"|"+pokemon.mov3+"|"+pokemon.mov4);
-        editor.commit();
 
-        pref = context.getApplicationContext().getSharedPreferences("team",0);
-        String data = pref.getString(team,"");
-        String[] pokes = data.split("|");
-        if(pokes.length <=5){
-            data = data + "|" + pokemon;
+    public void getTeam(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM team where _id = "+id+"",null);
+        if(cursor != null){
+            cursor.moveToFirst();
+            Log.d("CURSOR",cursor.getString(1));
         }
-        editor = pref.edit();
-        editor.putString(team,data);
-        editor.commit();
+    }
+    public ArrayList<Pokemon> getPokemonsFromTeam(int team_id){
+        ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM pokemon where team_id = " + Integer.toString(team_id),null);
+        if (cursor.moveToFirst()) {
+            do {
+                Pokemon pokemon = new Pokemon();
+                pokemon.id = Integer.parseInt(cursor.getString(0));
+                pokemon.name = cursor.getString(1);
+                pokemon.type1 = Integer.parseInt(cursor.getString(2));
+                
+                pokemon.type2 = Integer.parseInt(cursor.getString(3));
+                pokemon.ability = cursor.getString(4);
+                pokemon.team_id = Integer.parseInt(cursor.getString(5));
+                // Adding contact to list
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        return pokemons;
+    }
 
-    }
-    public Pokemon getPokemon(String team, String name){
-        Pokemon pokemon = new Pokemon();
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("pokemon", 0);
-        String data = pref.getString(team + name, "");
-        String[] valores = data.split("|");
-        pokemon.name = name;
-        pokemon.tipo1 = valores[0].split("-")[0];
-        pokemon.tipo2 = valores[0].split("-")[1];
-        pokemon.ability = valores[1];
-        pokemon.mov1 = valores[2];
-        pokemon.mov2 = valores[3];
-        pokemon.mov3 = valores[4];
-        pokemon.mov4 = valores[5];
-
-        return pokemon;
-    }
-    public void removePokemon(String team,String pokemon){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("pokemon", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove(team+pokemon);
-        editor.commit();
-    }
-    //MOVES
-    public void addMove(String name, Move move){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("move", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(name,move.tipo+"|"+move.category+"|"+move.power+"|"+move.accuracy+"|"+move.description);
-        editor.commit();
-    }
-    public String getMove(String name){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("move", 0);
-        return pref.getString(name,"");
-    }
-    //ABILITIES
-    public void addAbility(String name, String description){
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("ability", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(name, description);
-    }
-    public String getAbility(String name) {
-        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("ability", 0);
-        return pref.getString(name,"");
-    }
 }

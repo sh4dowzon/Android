@@ -16,6 +16,8 @@ public class TeamListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_list_main);
+
+        //get team lists from db and save them into an array
         TeamList team_lists_data[] = new TeamList[]{
                 new TeamList("Team Kawaii",R.drawable.gengar,R.drawable.froslass,R.drawable.gliscor,R.drawable.sceptile, R.drawable.togekiss,R.drawable.magnezone),
                 new TeamList("Team Johto",R.drawable.ampharos,R.drawable.feraligatr,R.drawable.scizor,R.drawable.shuckle, R.drawable.typhlosion,R.drawable.tyranitar),
@@ -34,29 +36,43 @@ public class TeamListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView x = (TextView)view.findViewById(R.id.team_name);
                 //Toast.makeText(getApplicationContext(),v.getText(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(TeamListActivity.this,MainActivity.class);
+                Intent intent = new Intent(TeamListActivity.this,TeamActivity.class);
                 String v = x.getText().toString();
                 if(v.equals("Team Kawaii")){
                     intent.putExtra("TEAM_NAME","Team Kawaii");
+                    intent.putExtra("TEAM_ID",1);
                 }
                 else if(v.equals("Team Johto")){
-                    intent.putExtra("TEAM_NAME","Team Johto");
+                    intent.putExtra("TEAM_ID",2);
                 }
                 else if(v.equals("Team Sinnoh")){
-                    intent.putExtra("TEAM_NAME","Sinnoh");
+
+                    intent.putExtra("TEAM_ID",3);
                 }
                 else if(v.equals("Team Unova")){
-                    intent.putExtra("TEAM_NAME","Team Unova");
+                    intent.putExtra("TEAM_ID",4);
                 }
                 else if(v.equals("Team Kanto")){
-                    intent.putExtra("TEAM_NAME","Team Kanto");
+                    intent.putExtra("TEAM_ID",5);
                 }
                 else if(v.equals("Team Legendario")){
-                    intent.putExtra("TEAM_NAME","Team Legendario");
+                    intent.putExtra("TEAM_ID",6);
                 }
                 startActivity(intent);
             }
         });
+
+        DBHelper db = new DBHelper(this);
+        db.getWritableDatabase();
+        //db.dropTables();
+        db.createTables();
+        db.addTeam("Team Kawaii");
+        db.addTeam("Team Johto");
+        db.addTeam("Team Sinnoh");
+        db.addTeam("Team Unova");
+        db.addTeam("Team Kanto");
+        db.addTeam("Team Legendario");
+
 
     }
 }

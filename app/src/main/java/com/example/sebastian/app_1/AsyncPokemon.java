@@ -35,6 +35,9 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
         try {
             Log.d("INPUT",params[0]);
 
+            type1 = "";
+            type2 = "";
+
             //get pokemon ID
 
             Document doc = Jsoup.connect("http://pokemondb.net/pokedex/" + params[0]).get();
@@ -59,13 +62,15 @@ public class AsyncPokemon extends AsyncTask<String, Integer, Bitmap> {
             String src = subtest.absUrl("href");
             URL url = new URL(src);
             String stringTipo1 = tipo1.text();
-            type1 = tipo1.text();
+            type1 = tipo1.text().trim().toLowerCase();
+
             String stringTipo2 = "nulo";
             if(tipo2 != null){
                 stringTipo2 = tipo2.text();
-                type2 = tipo2.text();
+                type2 = tipo2.text().trim().toLowerCase();
             }
             Bitmap imagen = loadFromURL(src);
+
             adapter.addPokemon(params[0].substring(0,1).toUpperCase()+params[0].substring(1), imagen, stringTipo1,stringTipo2);
 
 

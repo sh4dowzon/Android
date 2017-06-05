@@ -5,6 +5,8 @@ package com.example.sebastian.app_1;
  */
 
 public class Pokemon {
+    public int id;
+    public int team_id;
     public int icon;
     public String name;
     public int type1;
