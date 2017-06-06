@@ -79,7 +79,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="ea426108aff1fa1f20e6177c4cbff5302ef0a7d6">
+        sha1="cdd2eae2580c8fcd508cde2c86e76fe45f975745">
         <dex dex="/Users/victor/Desktop/poke_apk/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_4e053dbdfa6164c71a2625a3161d7a3693a8517a/classes.dex" />
     </item>
 
