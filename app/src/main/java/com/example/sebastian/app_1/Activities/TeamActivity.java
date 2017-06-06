@@ -3,6 +3,7 @@ package com.example.sebastian.app_1.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +22,8 @@ public class TeamActivity extends AppCompatActivity {
 
 
     ListView lv;
+
+
 
     private int team_id = 0;
     @Override
@@ -89,5 +92,41 @@ public class TeamActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.d("BACK","BACK");
+        if (requestCode == 1) {
+
+            if(resultCode == RESULT_OK){
+
+                //GET TEAM FROM ID
+
+                Bundle extras = intent.getExtras();
+                if (extras!=null) {
+
+                    //GET TEAM FROM ID
+                    team_id = extras.getInt("TEAM_ID");
+                    DBHelper db = new DBHelper(this);
+
+                    //GET POKEMONS FROM TEAM
+                    List<Pokemon> pokemons = db.getPokemonsFromTeam(team_id);
+
+                    //LOAD POKEMONS IN LIST ADAPTER
+                    TeamAdapter adapter = new TeamAdapter(this,R.layout.poke_list_listview_item_row,pokemons);
+                    lv = (ListView) findViewById(R.id.lv);
+                    View header = (View) getLayoutInflater().inflate(R.layout.poke_list_header_row,null);
+                    lv.addHeaderView(header);
+                    lv.setAdapter(adapter);
+
+
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Do nothing?
+            }
+        }
+    }//onActivityResult
 }

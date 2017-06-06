@@ -9,9 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-
-import com.example.sebastian.app_1.Utils.Converter;
-import com.example.sebastian.app_1.Utils.Pokemon;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -108,9 +106,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //GET TEAM LIST FROM DB
-    public void getTeams(){
+    public ArrayList<TeamList> getTeams(){
+        ArrayList<TeamList> teams = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM team",null);
+
+        if(cursor.moveToFirst()){
+            do{
+                TeamList team = new TeamList();
+                team.id = cursor.getInt(0);
+                team.team_name = cursor.getString(1);
+                ArrayList<Pokemon> pokemons = getPokemonsFromTeam(team.id);
+                for(int i = 0; i < pokemons.size();i++){
+                    team.pokemons.add(pokemons.get(i).image);
+                }
+
+                teams.add(team);
+            }while (cursor.moveToNext());
+        }
+        Log.d("TEAMSIZE",""+cursor.getCount());
+        return teams;
     }
 
     //GET SINGLE TEAM WITH ITS POKEMON FROM DB

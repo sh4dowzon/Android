@@ -88,7 +88,8 @@ public class PokemonSearchActivity extends AppCompatActivity {
                 //INTENT AND CHANGE TO ANOTHER ACTIVITY
                 Intent intent = new Intent(PokemonSearchActivity.this,TeamActivity.class);
                 intent.putExtra("TEAM_ID",team_id);
-                startActivity(intent);
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
     }
