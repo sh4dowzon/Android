@@ -46,8 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db2) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_TEAM);
         db.execSQL(CREATE_TABLE_POKEMON);
 
